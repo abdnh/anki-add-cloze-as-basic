@@ -1,0 +1,4 @@
+venv/
+ankiprofile/
+.mypy_cache/
+*.ankiaddon
