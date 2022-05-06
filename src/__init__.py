@@ -5,7 +5,7 @@ from aqt import mw
 from aqt.addcards import AddCards
 from aqt.gui_hooks import add_cards_did_init
 from aqt.qt import *
-from aqt.utils import showWarning, tooltip
+from aqt.utils import showWarning, tooltip, tr
 
 CONFIG = mw.addonManager.getConfig(__name__)
 CLOZE_RE = re.compile(r"(?si){{c(\d+)::(.*?)}}")
@@ -30,7 +30,7 @@ def reveal_cloze(text: str, num: int) -> Tuple[str, str]:
 def add_cloze_as_basic(addcards: AddCards) -> None:
     note = addcards.editor.note
     text = note.fields[0]
-    notetype = mw.col.models.by_name("Basic")
+    notetype = mw.col.models.by_name(tr.notetypes_basic_name())
     did = addcards.deck_chooser.selected_deck_id
     if not notetype:
         showWarning(
@@ -42,8 +42,8 @@ def add_cloze_as_basic(addcards: AddCards) -> None:
         front, back = reveal_cloze(text, cloze_num)
         note = mw.col.new_note(notetype)
         # TODO: maybe check for the existence of Front and Back
-        note["Front"] = front
-        note["Back"] = back
+        note[tr.notetypes_front_field()] = front
+        note[tr.notetypes_back_field()] = back
         mw.col.add_note(note, did)
 
     notes_count = len(cloze_numbers)
